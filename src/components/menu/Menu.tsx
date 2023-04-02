@@ -1,118 +1,152 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import RoomIcon from '@mui/icons-material/Room';
-import CategoryIcon from '@mui/icons-material/Category';
-import ScaleIcon from '@mui/icons-material/Scale';
-import CurrencyRubleIcon from '@mui/icons-material/CurrencyRuble';
-import EventIcon from '@mui/icons-material/Event';
-import InputAdornment from '@mui/material/InputAdornment/InputAdornment';
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+import RoomIcon from "@mui/icons-material/Room";
+import CategoryIcon from "@mui/icons-material/Category";
+import ScaleIcon from "@mui/icons-material/Scale";
+import CurrencyRubleIcon from "@mui/icons-material/CurrencyRuble";
+import InputAdornment from "@mui/material/InputAdornment/InputAdornment";
 
-import styles from './styles.module.scss'
+import styles from "./styles.module.scss";
+import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
+import DatePicker from "../datePicker/datePicker";
 
+const Menu = () => {
+  const [form, setForm] = useState({
+    category: "",
+    locale: "",
+    cost: "",
+    weight: "",
+    data_start: "",
+    date_end: "",
+    file: "",
+  });
 
-const Menu=()=>{
-const [form,setForm]= useState({
-    category:'',
-    locale:'',
-    cost:'',
-    weight:'',
-    data_start:'',
-    date_end:''})
-const [category, setCategory] = useState([1,2,3,4,5])
-    return(
-        <div className={styles.menu}>
-            <div className={styles.menu__form}>
-            <Autocomplete
-            className={styles.form__input}
-               
-                id="free-solo-demo"
-                options={category}
-                renderInput={(params) => 
-                <TextField  
-                {...params}
-                    InputProps={{
-
-                ...params.InputProps,
-                        startAdornment: (
-                        <InputAdornment position="start">
-                            <CategoryIcon />
-                        </InputAdornment>
-                    ),
-                }} 
-                label="Категория продукта" 
-                />}
-            />
-
-            <Autocomplete
-                className={styles.form__input}
-                multiple
-                id="tags-outlined"
-                options={category}
-                filterSelectedOptions
-                renderInput={(params) => (
-                <TextField
-
-                className={styles.form__text}
-                    {...params}
-                    InputProps={{
-
-                        ...params.InputProps,
-                                startAdornment: (
-                                <InputAdornment position="start">
-                                    <RoomIcon />
-                                </InputAdornment>
-                            ),
-                        }} 
-                    label="Локализация продукта"
-                    placeholder="Локализация продукта"                    />
-                )}
-            />
-
-<Autocomplete
-                className={styles.form__input}
-                id="free-solo-demo"
-                options={category}
-                renderInput={(params) => 
-                <TextField  
-                {...params}
-                    InputProps={{
-
-                ...params.InputProps,
-                        startAdornment: (
-                        <InputAdornment position="start">
-                            <CurrencyRubleIcon />
-                        </InputAdornment>
-                    ),
-                }} 
-                label="Ориентировачная стоимость продукта" 
-                />}
-            />
-            <Autocomplete
-            className={styles.form__input}
-            id="free-solo-demo"
+  const [category, setCategory] = useState(["1", "2", "3", "4", "5"]);
+  return (
+    <div className={styles.menu}>
+      <div className={styles.menu__form}>
+        <p className={styles.form__label}>Выбор продукта и параметров</p>
+        <div className={styles.form__fields}>
+          <Autocomplete
+            sx={{}}
+            id="category"
             options={category}
-            renderInput={(params) => 
-            <TextField  
-            {...params}
+            renderInput={(params) => (
+              <TextField
+                sx={{
+                  "& .MuiInputBase-root": {
+                    height: 40,
+                    borderRadius: 2.5,
+                  },
+                }}
+                className={styles.form__text}
+                {...params}
                 InputProps={{
-
-            ...params.InputProps,
-                    startAdornment: (
+                  ...params.InputProps,
+                  startAdornment: (
                     <InputAdornment position="start">
-                        <ScaleIcon />
+                      <CategoryIcon
+                        fontSize="small"
+                        style={{ position: "relative", bottom: "5px" }}
+                      />
                     </InputAdornment>
+                  ),
+                }}
+                label="Категория продукта"
+              />
+            )}
+          />
+          <Autocomplete
+            multiple
+            filterSelectedOptions
+            sx={{}}
+            className={styles.form__input}
+            id="tags-outlined"
+            options={category}
+            renderInput={(params) => (
+              <TextField
+                sx={{
+                  "& .MuiInputBase-root": {
+                    height: 40,
+                    borderRadius: 2.5,
+                  },
+                }}
+                className={styles.form__text}
+                {...params}
+                /*InputProps={{
+                ...params.InputProps,
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <RoomIcon
+                      fontSize="small"
+                      style={{ position: "relative", bottom: "5px" }}
+                    />
+                  </InputAdornment>
+                  
                 ),
-            }} 
-            label="Вес единицы продутка" 
-            />}
-        />
-            </div>
-            
+                
+              }}*/
+                label="Локализация продукта"
+              />
+            )}
+          />
+          <TextField
+            className={styles.form__input}
+            sx={{
+              "& .MuiInputBase-root": {
+                height: 40,
+                borderRadius: 2.5,
+              },
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <CurrencyRubleIcon fontSize="small" />
+                </InputAdornment>
+              ),
+            }}
+            label="Ориентировачная стоимость продукта"
+          />
+          <TextField
+            className={styles.form__input}
+            sx={{
+              "& .MuiInputBase-root": {
+                height: 40,
+                borderRadius: 2.5,
+              },
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <ScaleIcon fontSize="small" />
+                </InputAdornment>
+              ),
+            }}
+            label="Вес единицы продутка"
+          />
+          <DatePicker />
         </div>
-    )
-}
+      </div>
+      <div className={styles.form__upload}>
+        <p className={styles.upload__label}>Загрузка данных из таблицы</p>
+        <h1 className={styles.upload__fileName}>{form.file&&form.file.substring(0,9)}{!form.file&&"Пока файлов нет..."}</h1>
+        <label className={styles.upload__btn}>
+          <input
+            type="file"
+            accept=".csv,.xlsx"
+            onChange={(e) => {
+              setForm({ ...form, file: e.target.value.split("\\")[2] });
+            }}
+          />
+          Добавить
+        </label>
+       
+        <p className={styles.upload__fileName}>*Форматы, допустимые для загрузки: .csv/.xlsx</p>
+      </div>
+    </div>
+  );
+};
 
-export default Menu
+export default Menu;
