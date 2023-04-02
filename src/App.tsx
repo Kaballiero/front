@@ -1,8 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
-
 import Main from "./page/Main/Main";
-import Contacts from "./page/Contacts/Contacts";
 
 import { ThemeProvider, createTheme } from "@mui/material";
 import styles from "./App.module.scss";
@@ -38,10 +35,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
         <div className={styles.App}>
-          <Routes>
-            <Route path="main" element={<Main />} />
-            <Route path="contacts" element={<Contacts />} />
-          </Routes>
+          <Main />
         </div>
     </ThemeProvider>
   );

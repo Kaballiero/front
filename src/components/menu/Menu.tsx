@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -11,6 +11,8 @@ import InputAdornment from "@mui/material/InputAdornment/InputAdornment";
 import styles from "./styles.module.scss";
 import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
 import DatePicker from "../datePicker/datePicker";
+import classnames from "classnames";
+
 
 const Menu = () => {
   const [form, setForm] = useState({
@@ -24,10 +26,84 @@ const Menu = () => {
   });
 
   const [category, setCategory] = useState(["1", "2", "3", "4", "5"]);
+  const [menuPage, setMenuPage] = useState(false)
+
+  const btnHandler=useCallback(()=>{setMenuPage(!menuPage)},[menuPage])
   return (
     <div className={styles.menu}>
       <div className={styles.menu__form}>
         <p className={styles.form__label}>Выбор продукта и параметров</p>
+        <div className={styles.form__btn}>
+          <button onClick={btnHandler} className={classnames(styles.form__btn_underline,{[styles.form__btn_activ]:!menuPage})}>Анализ спроса</button>
+          <button onClick={btnHandler} className={classnames(styles.form__btn_underline,{[styles.form__btn_activ]:menuPage})}>Анализ цен</button>
+        </div>
+        {menuPage&&
+        <div className={styles.form__fields_small}>
+          <Autocomplete
+            id="category"
+            options={category}
+            renderInput={(params) => (
+              <TextField
+                sx={{
+                  "& .MuiInputBase-root": {
+                    height: 40,
+                    borderRadius: 2.5,
+                    marginBottom:3
+                  },
+                }}
+                className={styles.form__text}
+                {...params}
+                InputProps={{
+                  ...params.InputProps,
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <CategoryIcon
+                        fontSize="small"
+                        style={{ position: "relative", bottom: "5px" }}
+                      />
+                    </InputAdornment>
+                  ),
+                }}
+                label="Категория продукта"
+              />
+            )}
+          />
+          <Autocomplete
+            className={styles.form__input}
+            id="tags-outlined"
+            options={category}
+            renderInput={(params) => (
+              <TextField
+                sx={{
+                  "& .MuiInputBase-root": {
+                    height: 40,
+                    borderRadius: 2.5,
+                    marginBottom:3
+                  },
+                }}
+                className={styles.form__text}
+                {...params}
+                InputProps={{
+                ...params.InputProps,
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <RoomIcon
+                      fontSize="small"
+                      style={{ position: "relative", bottom: "5px" }}
+                    />
+                  </InputAdornment>
+                  
+                ),
+                
+              }}
+                label="Локализация продукта"
+              />
+            )}
+          />
+         
+          <DatePicker />
+        </div>}
+        {!menuPage&&
         <div className={styles.form__fields}>
           <Autocomplete
             sx={{}}
@@ -127,7 +203,8 @@ const Menu = () => {
             label="Вес единицы продутка"
           />
           <DatePicker />
-        </div>
+        </div>}
+        
       </div>
       <div className={styles.form__upload}>
         <p className={styles.upload__label}>Загрузка данных из таблицы</p>
